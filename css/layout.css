@@ -1,0 +1,61 @@
+.app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+
+.sidebar {
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column; gap: 1.25rem;
+  padding: 1.25rem 1rem;
+  background: rgba(8, 8, 22, 0.7);
+  backdrop-filter: blur(14px);
+  border-right: 1px solid var(--border);
+}
+
+.brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 800; font-size: 1.35rem; letter-spacing: 0.25em; }
+.brand-mark { color: var(--accent-2); text-shadow: 0 0 14px var(--accent-2); }
+.brand-text { color: var(--accent); text-shadow: var(--glow); }
+
+.nav-stack { display: flex; flex-direction: column; gap: 0.35rem; }
+.sidebar-foot { margin: auto 0 0; font-size: 0.78rem; color: var(--muted); }
+
+.content { min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  height: var(--topbar-h);
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0 1.5rem;
+  background: rgba(6, 6, 15, 0.65);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.page-title { margin: 0; font-size: 1.15rem; font-weight: 700; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 1rem; }
+.clock { font-family: var(--mono); color: var(--accent); }
+
+main { padding: 1.5rem; max-width: 1200px; width: 100%; }
+main:focus { outline: none; }
+
+.view { display: none; }
+.view.active { display: block; animation: fadeUp 0.35s var(--ease); }
+
+.kanban { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+
+.menu-btn { display: none; }
+.scrim { display: none; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Tablet and mobile: sidebar slides in */
+@media (max-width: 991.98px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar {
+    position: fixed; z-index: 40; width: var(--sidebar-w);
+    transform: translateX(-100%); transition: transform 0.3s var(--ease);
+  }
+  body.menu-open .sidebar { transform: none; }
+  body.menu-open .scrim { display: block; position: fixed; inset: 0; z-index: 30; background: rgba(0, 0, 0, 0.55); }
+  .menu-btn { display: inline-flex; }
+  .kanban { grid-template-columns: 1fr; }
+  main { padding: 1rem; }
+  .topbar { padding: 0 1rem; }
+  .kbd-hint { display: none; }
+}

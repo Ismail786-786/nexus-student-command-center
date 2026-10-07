@@ -1,0 +1,3 @@
+/* Default theme "cyber" uses the values in variables.css. Others arrive in Step 12. */
+[data-theme="violet"] { --accent: #8b5cf6; --accent-2: #38bdf8; }
+[data-theme="matrix"] { --accent: #39ff88; --accent-2: #14b8a6; }
