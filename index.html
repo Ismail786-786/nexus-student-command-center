@@ -62,7 +62,7 @@
 
           <div class="row g-3 mt-1">
             <div class="col-6 col-xl-3"><div class="glass stat"><span class="stat-label">Open tasks</span><strong class="stat-value" id="statTasks">0</strong></div></div>
-            <div class="col-6 col-xl-3"><div class="glass stat"><span class="stat-label">Focus today</span><strong class="stat-value" id="statFocus">0 min</strong></div></div>
+            <div class="col-lg-7"><div class="glass panel"><h3>Today's focus</h3><ul class="focus-list" id="focusList"></ul></div></div>
             <div class="col-6 col-xl-3"><div class="glass stat"><span class="stat-label">CGPA</span><strong class="stat-value" id="statCgpa">--</strong></div></div>
             <div class="col-6 col-xl-3"><div class="glass stat"><span class="stat-label">Notes</span><strong class="stat-value" id="statNotes">0</strong></div></div>
           </div>
@@ -78,13 +78,32 @@
         </section>
 
         <!-- Tasks -->
-        <section class="view" id="tasks" data-title="Tasks" aria-label="Tasks">
-          <div class="kanban">
-            <div class="glass column"><h3>To Do</h3><div class="col-body" id="col-todo"><p class="muted small">Kanban arrives in Step 8.</p></div></div>
-            <div class="glass column"><h3>Doing</h3><div class="col-body" id="col-doing"></div></div>
-            <div class="glass column"><h3>Done</h3><div class="col-body" id="col-done"></div></div>
-          </div>
-        </section>
+       <section class="view" id="tasks" data-title="Tasks" aria-label="Tasks">
+  <form class="glass panel task-form" id="taskForm" autocomplete="off">
+    <label class="visually-hidden" for="taskTitle">Task title</label>
+    <input class="form-control" id="taskTitle" type="text" maxlength="80" placeholder="What needs to be done?" required>
+    <label class="visually-hidden" for="taskPriority">Priority</label>
+    <select class="form-select" id="taskPriority">
+      <option value="low">Low</option>
+      <option value="med" selected>Medium</option>
+      <option value="high">High</option>
+    </select>
+    <label class="visually-hidden" for="taskDue">Due date</label>
+    <input class="form-control" id="taskDue" type="date">
+    <button class="btn-neon" type="submit">Add task</button>
+  </form>
+
+  <div class="d-flex justify-content-between align-items-center my-3 gap-2">
+    <p class="muted small mb-0">Drag cards between columns, or use the arrow buttons.</p>
+    <button class="btn-neon alt" id="clearDone" type="button">Clear done</button>
+  </div>
+
+  <div class="kanban">
+    <div class="glass column"><h3>To Do <span class="count" id="count-todo">0</span></h3><div class="col-body" id="col-todo"></div></div>
+    <div class="glass column"><h3>Doing <span class="count" id="count-doing">0</span></h3><div class="col-body" id="col-doing"></div></div>
+    <div class="glass column"><h3>Done <span class="count" id="count-done">0</span></h3><div class="col-body" id="col-done"></div></div>
+  </div>
+</section>
 
         <!-- Timer -->
         <section class="view" id="timer" data-title="Focus Timer" aria-label="Focus timer">

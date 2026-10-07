@@ -21,6 +21,9 @@ a { color: var(--accent); text-decoration: none; }
 .muted { color: var(--muted); }
 
 kbd {
+  color: var(--text);   /* add this line */
+  font-family: var(--mono);
+  /* ...rest stays the same */
   font-family: var(--mono);
   font-size: 0.72rem;
   padding: 2px 6px;

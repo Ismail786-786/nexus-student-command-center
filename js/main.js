@@ -1,5 +1,6 @@
-const $ = (sel, root = document) => root.querySelector(sel);
-const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+import { $, $$, todayKey, h, PRIO_LABEL } from './utils.js';
+import { subscribe } from './store.js';
+import { initTasks } from './tasks.js';
 
 /* ---------- View routing (hash based, works on GitHub Pages) ---------- */
 function showView() {
@@ -34,9 +35,30 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu();
 function updateClock() {
   const now = new Date();
   $('#clock').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const h = now.getHours();
-  const part = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  const hr = now.getHours();
+  const part = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
   $('#greeting').textContent = `${part}, Commander`;
+}
+
+/* ---------- Dashboard (updates whenever saved data changes) ---------- */
+const RANK = { high: 0, med: 1, low: 2 };
+
+function renderDashboard(s) {
+  const open = s.tasks.filter(t => t.status !== 'done');
+  $('#statTasks').textContent = open.length;
+  $('#statNotes').textContent = s.notes.length;
+  $('#statFocus').textContent = `${s.focusLog[todayKey()] || 0} min`;
+
+  const top = [...open]
+    .sort((a, b) => RANK[a.priority] - RANK[b.priority] || (a.due || '9999').localeCompare(b.due || '9999'))
+    .slice(0, 3);
+
+  const items = top.map(t => {
+    const li = h('li', 'focus-item');
+    li.append(h('span', '', t.title), h('span', `badge-prio ${t.priority}`, PRIO_LABEL[t.priority]));
+    return li;
+  });
+  $('#focusList').replaceChildren(...(items.length ? items : [h('li', 'muted', 'No open tasks. Add one in Tasks.')]));
 }
 
 /* ---------- Feedback form: client-side validation ---------- */
@@ -56,6 +78,8 @@ form.addEventListener('submit', e => {
 
 /* ---------- Start ---------- */
 window.addEventListener('hashchange', showView);
+initTasks();
+subscribe(renderDashboard);
 showView();
 updateClock();
 setInterval(updateClock, 15000);
